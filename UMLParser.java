@@ -12,7 +12,30 @@ import java.util.ArrayList;
 
 public class UMLParser {
 
+	public static void main(String[] args) throws Exception{
+		
+		String classNames;
+		
+		String input_dir_name = "E:/SJSU/202Paul/202UMLParser/SampleJavaFiles";
 
+		
+			//Create new file 
+			File f = new File(input_dir_name);
+		
+			//List the files in the input directory
+			File[] ipFiles = f.listFiles();
+		
+			for(File fList: ipFiles)
+			{
+				if (fList.isFile()) {
+					classNames = fList.getName();
+					ClassList = classNames.split("[.]");
+					System.out.println(classNames);
+          System.out.println(java_class_name);
+					}
+					
+				}
+	}
 
 }
 
