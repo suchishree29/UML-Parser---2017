@@ -31,10 +31,10 @@ public class UMLParser {
 					classNames = fList.getName();
 					ClassList = classNames.split("[.]");
 					System.out.println(classNames);
-          System.out.println(java_class_name);
+          				System.out.println(java_class_name);
 					}
 					
-				}
+			}
 	}
 
 }
