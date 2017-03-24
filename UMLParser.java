@@ -32,6 +32,7 @@ public class UMLParser {
 					ClassList = classNames.split("[.]");
 					System.out.println(classNames);
           				System.out.println(java_class_name);
+					System.out.println("In for loop");
 					}
 					
 			}
