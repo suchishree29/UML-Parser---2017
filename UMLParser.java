@@ -33,6 +33,8 @@ public class UMLParser {
 					ClassList = classNames.split("[.]");
 					System.out.println(classNames);
           				System.out.println(java_class_name);
+					
+					String filename = input_dir_name + "/" + classNames;
 					}
 					
 			}
