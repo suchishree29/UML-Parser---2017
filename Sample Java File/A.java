@@ -13,7 +13,7 @@ public class A {
 	private Collection<D> d;
 	
 	public void sum(int i){
-		System.out.println("In A.java file");
+
 	}
 	private int add1(){
 		
