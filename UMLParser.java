@@ -37,6 +37,11 @@ public class UMLParser {
 					String filename = input_dir_name + "/" + classNames;
 					System.out.println(filename);
 					}
+					try {
+						
+					}catch (Exception e) {
+						e.printStackTrace();
+					}
 					
 			}
 	}
