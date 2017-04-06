@@ -42,6 +42,15 @@ public class UMLParser {
 					}catch (Exception e) {
 						e.printStackTrace();
 					}
+					finally {
+						try {
+							in.close();
+
+						} catch (IOException e) {
+
+							e.printStackTrace();
+						}
+					}
 					
 			}
 	}
