@@ -35,7 +35,7 @@ public class UMLParser {
           				System.out.println(java_class_name);
 					
 					String filename = input_dir_name + "/" + classNames;
-					System.out.println(filename);
+					//System.out.println(filename);
 					}
 					try {
 						
