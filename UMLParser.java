@@ -18,7 +18,8 @@ public class UMLParser {
 		
 		String input_dir_name = args[0];
 		//String input_dir_name = "E:/SJSU/202Paul/202UMLParser/SampleJavaFiles";
-
+		String outfile = args[1];
+		String out_file = input_dir_name + "/" + outfile +".txt";
 		
 		
 			//Create new file 
