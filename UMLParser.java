@@ -13,6 +13,8 @@ import java.util.ArrayList;
 public class UMLParser {
 	static String[] ClassList ;
 	static ArrayList<String> java_class_name = new ArrayList<String>();
+	static ArrayList<String> class_names = new ArrayList<String>();
+	static ArrayList<String> interface_names = new ArrayList<String>();
 
 	public static void main(String[] args) throws Exception{
 		
