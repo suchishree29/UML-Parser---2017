@@ -11,6 +11,8 @@ import java.util.ArrayList;
 
 
 public class UMLParser {
+	static String[] ClassList ;
+	static ArrayList<String> java_class_name = new ArrayList<String>();
 
 	public static void main(String[] args) throws Exception{
 		
