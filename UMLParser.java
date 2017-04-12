@@ -15,6 +15,10 @@ public class UMLParser {
 	static ArrayList<String> java_class_name = new ArrayList<String>();
 	static ArrayList<String> class_names = new ArrayList<String>();
 	static ArrayList<String> interface_names = new ArrayList<String>();
+	static ArrayList<String> method_names = new ArrayList<String>();
+	static ArrayList<String> field_names = new ArrayList<String>();
+	static ArrayList<String> modifiers = new ArrayList<String>();
+	static ArrayList<String> rel_class = new ArrayList<String>();
 
 	public static void main(String[] args) throws Exception{
 		
