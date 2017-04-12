@@ -19,6 +19,9 @@ public class UMLParser {
 	static ArrayList<String> field_names = new ArrayList<String>();
 	static ArrayList<String> modifiers = new ArrayList<String>();
 	static ArrayList<String> rel_class = new ArrayList<String>();
+	static StringBuilder sb = new StringBuilder();
+	static FileInputStream in;
+	static CompilationUnit cu;
 
 	public static void main(String[] args) throws Exception{
 		
