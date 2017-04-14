@@ -46,9 +46,6 @@ public class UMLParser {
 		//String out_file = input_dir_name + "/" + outfile +".txt";
 		//System.out.println("Output File:" + out_file);
 		
-		/*File opFile = new File(out_file);
-		op = new FileWriter(opFile,true);
-		op.write("@startuml");*/
 		sb.append("@startuml\n");
 		sb.append("skinparam classAttributeIconsize 0\n");
 		
