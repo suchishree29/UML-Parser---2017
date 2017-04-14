@@ -19,7 +19,6 @@ public class UMLParser {
 	static ArrayList<String> field_names = new ArrayList<String>();
 	static ArrayList<String> modifiers = new ArrayList<String>();
 	static ArrayList<String> rel_class = new ArrayList<String>();
-	static ArrayList<String> rel_class = new ArrayList<String>();
 	static ArrayList<String> params_list = new ArrayList<String>();
 	static ArrayList<String> curr_param_list = new ArrayList<String>();
 	static ArrayList<String> interface_name = new ArrayList<String>();
