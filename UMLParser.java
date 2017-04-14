@@ -83,6 +83,11 @@ public class UMLParser {
 							e.printStackTrace();
 						}
 					}
+						//visit and print the methods names
+						new MethodVisitor().visit(cu, null);
+						new FieldVisitor().visit(cu, null);
+						new ConstructorTypeVisitor().visit(cu, null);
+						new ClassOrInterfaceVisitor().visit(cu,null);
 				}
 				
 			}
