@@ -28,6 +28,66 @@ public class UMLParser {
 
 	public static void main(String[] args) throws Exception{
 		
+			String classNames;
+		//String input_dir_name = args[0];
+		String input_dir_name = "E:/SJSU/202Paul/202UMLParser/SampleJavaFiles/TestCase5";
+		//System.out.println("Input Path: " + input_dir_name);
+		
+		//String outfile = args[1];
+		//String out_file = input_dir_name + "/" + outfile +".txt";
+		//System.out.println("Output File:" + out_file);
+		
+		/*File opFile = new File(out_file);
+		op = new FileWriter(opFile,true);
+		op.write("@startuml");*/
+		sb.append("@startuml\n");
+		sb.append("skinparam classAttributeIconsize 0\n");
+		
+		PlantUmlGenerator classDiagramUML = new PlantUmlGenerator();
+		
+		//Create new file
+		File f = new File(input_dir_name);
+		
+		//List the files in the input directory
+		File[] ipFiles = f.listFiles();
+
+		for(File fList: ipFiles)
+		{
+			if (fList.isFile()) {
+				classNames = fList.getName();
+				ClassList = classNames.split("[.]");
+				//System.out.println(ClassList[0]);
+				if (ClassList[1].equals("java")){
+					//java_class_name.add(ClassList[0]);	
+					String filename = input_dir_name + "/" + classNames;
+				
+					try {
+						// creates an input stream for the file to be parsed
+						in = new FileInputStream(filename);
+				
+						// parse the file
+						cu = JavaParser.parse(in);
+						JavaParser.setCacheParser(false);
+						
+						new InterfaceFirstVisitor().visit(cu,null);
+					
+					}catch (Exception e) {
+						e.printStackTrace();
+					}
+					finally {
+						try {
+							in.close();
+
+						} catch (IOException e) {
+
+							e.printStackTrace();
+						}
+					}
+				}
+				
+			}
+		}
+		
 		String classNames;
 		
 		String input_dir_name = args[0];
