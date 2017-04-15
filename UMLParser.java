@@ -158,3 +158,42 @@ public class UMLParser {
 			}
 		}
 	}
+	
+		private static class ClassOrInterfaceVisitor extends VoidVisitorAdapter<Void>{
+		@Override
+		public void visit(ClassOrInterfaceDeclaration c,Void arg){
+			java.util.List<ClassOrInterfaceType> type;
+
+			if (c.isInterface() == false ){
+				class_names.add(c.getName());
+				class_type = "class";
+			}else{
+				interface_name.add(c.getName());
+				class_type = "interface";
+			}
+			
+			if (c.getExtends()!= null) {
+				
+				type = c.getExtends();
+
+				for(int i=0;i < type.size();i++) {
+					String var = type.get(i).toString().replace("[,]","") +  "<|--" +" " +ClassList[0];
+					//System.out.println(var);
+					rel_class.add(var);
+				}				
+			}
+			//System.out.println(c.getImplements());
+			if (c.getImplements() != null){
+				type = c.getImplements();
+				//System.out.println(type);
+				for(int i =0; i<type.size();i++) {
+					String var = type.get(i).toString().replace("[,]","") + "<|.." + " " + ClassList[0];
+					//System.out.println(var);
+					rel_class.add(var);
+				}
+				
+			}
+			verifyDependency();
+		
+		}
+	}
