@@ -147,4 +147,14 @@ public class UMLParser {
 			System.out.println(sb);	
 
 	}
+	private static class InterfaceFirstVisitor extends VoidVisitorAdapter<Void>{
+		public void visit(ClassOrInterfaceDeclaration c,Void arg){
 
+			if(c.isInterface() == true){
+				interface_names.add(c.getName());
+			}else {
+				
+				all_class_names.add(c.getName());
+			}
+		}
+	}
