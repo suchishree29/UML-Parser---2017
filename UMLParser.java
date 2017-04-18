@@ -197,3 +197,60 @@ public class UMLParser {
 		
 		}
 	}
+	
+		//Fetch all fields
+	private static class FieldVisitor extends VoidVisitorAdapter<Void> {
+		
+		public void visit(FieldDeclaration f, Void arg){
+
+			int modifier = f.getModifiers();
+			String sign = null;
+			VariableDeclarator var_f;
+			String fieldType;
+			ArrayList<String> curr_fieldType = new ArrayList<String>();
+			
+			
+			if (modifier ==1){
+				sign = "+";
+			}else if(modifier ==2) {
+				sign = "-";
+			}
+			
+			fieldType = f.getType().toString();
+			var_f = (f.getVariables().get(0));
+				
+			String text = sign + var_f + " : " + fieldType;
+			if ((modifier ==1 || modifier ==2) && (fieldType.contains("Collection") == false) && (java_class_name.contains(fieldType) == false)){
+					field_names.add(text);
+			}
+			curr_fieldType.add(fieldType); 				
+			for(String s : curr_fieldType){
+				//System.out.println(s);
+				if(java_class_name.contains(s) && s.contains("Collection") == false){
+					String str = s + " -- " + ClassList[0];
+					String rev = ClassList[0] + " -- " + s;
+					System.out.println("Current Association" +curr_association);
+					System.out.println("Association" + association_class);
+					System.out.println("str :"+str);
+					//Add the association line only If current list do not have the reverse string and current list do not have the str
+					if((curr_association.contains(rev) == false) && (curr_association.contains(str) == false)){
+						association_class.add(str);
+						curr_association.add(str); 
+					}
+				}else if(s.contains("Collection")){
+					String[] param = s.split("<");
+					param[1] = param[1].replace(">","");
+					if(java_class_name.contains(param[1])){
+						String str = ClassList[0] + " -- " + "\"*\" " + param[1];
+						String rev = param[1] + " -- " + ClassList[0];
+						String without_star = ClassList[0] + " -- " + param[1];
+						if ((curr_association.contains(without_star) == false) && (curr_association.contains(rev) == false)){
+							association_class.add(str);
+							curr_association.add(without_star);
+						}
+					}
+				}
+			}
+		}
+		
+	}
