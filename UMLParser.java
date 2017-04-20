@@ -379,3 +379,26 @@ public class UMLParser {
 		flag = 0;
 		}
 	}
+	
+		//Fetch all Constructors
+	private static class ConstructorTypeVisitor extends VoidVisitorAdapter<Void> {
+		
+		public void visit(ConstructorDeclaration cd, Void arg){
+						
+			if (cd.getParameters() != null){
+				curr_param_list.add(cd.getParameters().toString().replace("["," ").replace("]", " "));
+				
+				StringBuffer  str = new StringBuffer();
+				for(int i = 0; i< cd.getParameters().size() ; i++){
+					 str.append(cd.getParameters().get(i).getId() + " : " + cd.getParameters().get(i).getType() + " ");
+				}
+				String text = cd.getName() + "(" + str + ")";
+				constructor_names.add(text);
+
+			}else if (cd.getParameters() == null){
+				String str = cd.getName() + "()";
+				constructor_names.add(str);
+			}
+			constructorDependency();
+		}
+	}
