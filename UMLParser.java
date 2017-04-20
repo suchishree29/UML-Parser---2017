@@ -310,3 +310,72 @@ public class UMLParser {
 		flag = 0;
 		}
 	}
+	
+		//Fetch all methods in the class
+	private static class MethodVisitor extends VoidVisitorAdapter<Void>{
+		@Override
+		public void visit(MethodDeclaration m,Void arg){
+
+			int modifier = m.getModifiers();
+			String[] splitVariable;
+			String[] part;
+			int flag = 0;
+			String text = " ";
+			String tempString;
+			String mergeVariable;
+						
+		if ((m.getName().substring(0,3).equals("get") || m.getName().substring(0,3).equals("set")) && (modifier ==1)) 
+		{
+			flag = 1;
+			
+			for(int i=0;i<=field_names.size()-1;i++){
+				
+				splitVariable = field_names.get(i).split(":");
+				part = splitVariable[0].split(" ");
+				String fieldName = part[1];
+
+				if (m.getName().substring(3).equalsIgnoreCase(fieldName)) {
+					flag = 1;
+					tempString = field_names.get(i).substring(1);
+					mergeVariable = "+" + tempString;
+					field_names.set(i, mergeVariable);
+				}
+			}
+		}else if (((modifier == 1) || (modifier ==1025) || (modifier == 9)) && (flag ==0)){
+
+				//System.out.println("in flag = 0 "+ m.getName());
+				if (m.getParameters() != null){
+					curr_param_list.add(m.getParameters().toString().replace("[","").replace("]",""));
+					
+					StringBuffer  str = new StringBuffer();
+					for(int i = 0; i< m.getParameters().size() ; i++){
+						 str.append(m.getParameters().get(i).getId() + " : " + m.getParameters().get(i).getType() + " ");
+					}
+					if (modifier == 9){
+						text = "{static}" + m.getName() + "(" + str +")" + ":" + m.getType();
+						method_names.add(text);
+					}else {
+						text = m.getName() + "(" + str +")" + ":" + m.getType();
+						method_names.add(text);
+					}
+					
+					if (m.getName().contains("main")) {
+						//System.out.println("Body of main *" +m.getBody().getStmts().get(0).toString());
+						for(int i=0;i<+m.getBody().getStmts().size()-1;i++){
+							splitVariable = m.getBody().getStmts().get(i).toString().split(" ");
+							//System.out.println("split variable"+splitVariable[0]);
+							if(interface_names.contains(splitVariable[0]) == true){
+								text = ClassList[0] + "..>" + splitVariable[i];
+								rel_class.add(text);
+							}
+						}
+					}
+				}
+				else if(m.getParameters() == null){
+					text = m.getName() + "()" + ":" + m.getType();
+					method_names.add(text);
+				}
+			}
+		flag = 0;
+		}
+	}
