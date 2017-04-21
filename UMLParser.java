@@ -435,3 +435,43 @@ public class UMLParser {
 		}
 	curr_param_list.clear();
 	}
+private static void write(){
+	try {
+		//sb.setLength(0);
+		
+		if (class_type == "interface") {
+			sb.append(class_type + " " + ClassList[0] + "<<interface>>" + "{" + "\n");
+		} else {
+			sb.append(class_type + " " + ClassList[0] + "{" + "\n");
+		}
+		
+		for(String s: constructor_names) {
+			sb.append("+").append(s).append("\n");
+		}
+		for(String s: method_names) {
+			//System.out.println(s);
+			sb.append("+").append(s).append("\n");
+		}
+		for (String s: field_names){
+			sb.append(s).append("\n");
+		}
+		sb.append("}").append("\n");
+		for(String s: rel_class){			
+			//System.out.println(s);			
+			sb.append(s).append("\n");
+		}
+		for(String s: association_class){
+				sb.append(s).append("\n");
+		}
+		
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+	constructor_names.clear();
+	method_names.clear();
+	field_names.clear();
+	rel_class.clear();
+	association_class.clear();
+	
+	}
+}
