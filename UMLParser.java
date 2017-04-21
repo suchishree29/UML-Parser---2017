@@ -419,3 +419,19 @@ public class UMLParser {
 		}			
 		curr_param_list.clear();
 	}
+		public static void constructorDependency() {
+		String[] paramC;
+		String text;
+							
+		for(String p: curr_param_list){
+			//System.out.println("curr params list-->" +p);
+			paramC = p.trim().split(" ");
+			if(interface_names.contains(paramC[0]) && interface_names.contains(ClassList[0]) == false){
+				text = ClassList[0] + "..>" + paramC[0];
+				if(rel_class.contains(text) == false){
+					rel_class.add(text);
+				}
+			}					
+		}
+	curr_param_list.clear();
+	}
