@@ -402,3 +402,20 @@ public class UMLParser {
 			constructorDependency();
 		}
 	}
+		public static void verifyDependency() {
+		String[] param;
+		String text;
+
+
+		for(String p: curr_param_list){
+			//System.out.println("curr params list-->" +p);
+			param = p.trim().split(" ");
+			if(interface_names.contains(param[0]) && interface_names.contains(ClassList[0]) == false){
+				text = ClassList[0] + "..>" + param[0] + ":uses";
+				if(rel_class.contains(text) == false){
+					rel_class.add(text);
+				}
+			}			
+		}			
+		curr_param_list.clear();
+	}
