@@ -1,4 +1,4 @@
-import java.util.Collection;
+ import java.util.Collection;
 
 public class A {
  
@@ -11,11 +11,6 @@ public class A {
 	private C c;
 	 
 	private Collection<D> d;
-	
-	public void sum(int i){
-
-	}
-	private int add1(){
-		
-	}
+	 
 }
+ 
