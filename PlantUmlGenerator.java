@@ -16,8 +16,8 @@ public class PlantUmlGenerator {
 		reader = new SourceStringReader(plantUmlSource.toString());
 		UMLParser umlDiag = new UMLParser();
 
-        FileOutputStream output = new FileOutputStream(new File("E:/SJSU/202Paul/202UMLParser/SampleJavaFiles/output.png"));
-		//FileOutputStream output = new FileOutputStream(new File(umlDiag.out_file));
+        //FileOutputStream output = new FileOutputStream(new File("E:/SJSU/202Paul/202UMLParser/SampleJavaFiles/output.png"));
+		FileOutputStream output = new FileOutputStream(new File(umlDiag.out_file));
         reader.generateImage(output, new FileFormatOption(FileFormat.PNG, false));
         
 		}catch (IOException e ) {
@@ -25,4 +25,3 @@ public class PlantUmlGenerator {
 		}
 	}
 }
-
