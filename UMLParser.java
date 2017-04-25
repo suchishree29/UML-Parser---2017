@@ -10,6 +10,7 @@ import japa.parser.ast.visitor.VoidVisitorAdapter;
 
 import java.io.File;
 import java.io.FileInputStream;
+//import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -17,35 +18,39 @@ import java.util.ArrayList;
 public class UMLParser {
 	
 	static String[] ClassList ;
-	static String[] params;
-	static String[] paramsConstructor;
 	static String class_type;
+	static String out_file;
 	static ArrayList<String> java_class_name = new ArrayList<String>();
+	static ArrayList<String> all_class_names = new ArrayList<String>();
 	static ArrayList<String> class_names = new ArrayList<String>();
 	static ArrayList<String> interface_names = new ArrayList<String>();
 	static ArrayList<String> method_names = new ArrayList<String>();
 	static ArrayList<String> field_names = new ArrayList<String>();
+	static ArrayList<String> all_field_names = new ArrayList<String>();
+	static ArrayList<String> curr_field_names = new ArrayList<String>();
 	static ArrayList<String> constructor_names = new ArrayList<String>();
 	static ArrayList<String> modifiers = new ArrayList<String>();
 	static ArrayList<String> rel_class = new ArrayList<String>();
-	static ArrayList<String> params_list = new ArrayList<String>();
+	static ArrayList<String> association_class = new ArrayList<String>();
 	static ArrayList<String> curr_param_list = new ArrayList<String>();
 	static ArrayList<String> interface_name = new ArrayList<String>();
+	static ArrayList<String> curr_association = new ArrayList<String>();
 	static StringBuilder sb = new StringBuilder();
 	static FileInputStream in;
 	static CompilationUnit cu;
 
+
 	public static void main(String[] args) throws Exception{
 		
 		String classNames;
-		//String input_dir_name = args[0];
-		String input_dir_name = "E:/SJSU/202Paul/202UMLParser/SampleJavaFiles/TestCase5";
+		String input_dir_name = args[0];
+		//String input_dir_name = "E:/SJSU/202Paul/202UMLParser/SampleJavaFiles/TestCase5";
 		//System.out.println("Input Path: " + input_dir_name);
 		
-		//String outfile = args[1];
-		//String out_file = input_dir_name + "/" + outfile +".txt";
+		String outfile = args[1];
+		out_file = input_dir_name + "/" + outfile +".png";
 		//System.out.println("Output File:" + out_file);
-		
+
 		sb.append("@startuml\n");
 		sb.append("skinparam classAttributeIconsize 0\n");
 		
@@ -62,9 +67,8 @@ public class UMLParser {
 			if (fList.isFile()) {
 				classNames = fList.getName();
 				ClassList = classNames.split("[.]");
-				//System.out.println(ClassList[0]);
 				if (ClassList[1].equals("java")){
-					//java_class_name.add(ClassList[0]);	
+					java_class_name.add(ClassList[0]);
 					String filename = input_dir_name + "/" + classNames;
 				
 					try {
@@ -73,10 +77,8 @@ public class UMLParser {
 				
 						// parse the file
 						cu = JavaParser.parse(in);
-						JavaParser.setCacheParser(false);
-						
+						JavaParser.setCacheParser(false);						
 						new InterfaceFirstVisitor().visit(cu,null);
-					
 					}catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -102,9 +104,6 @@ public class UMLParser {
 					//System.out.println(ClassList[0]);
 					if (ClassList[1].equals("java")){
 						java_class_name.add(ClassList[0]);	
-						//for (String j:java_class_name){
-							//System.out.println(j);
-						//}
 						String filename = input_dir_name + "/" + classNames;
 					
 						try {
@@ -113,7 +112,7 @@ public class UMLParser {
 					
 							// parse the file
 							cu = JavaParser.parse(in);
-							System.out.println(cu);
+							//System.out.println(cu);
 							JavaParser.setCacheParser(false);
 							
 						
@@ -132,8 +131,9 @@ public class UMLParser {
 						//determine if its a class or interface
 
 						//visit and print the methods names
-						new MethodVisitor().visit(cu, null);
+						
 						new FieldVisitor().visit(cu, null);
+						new MethodVisitor().visit(cu, null);
 						new ConstructorTypeVisitor().visit(cu, null);
 						new ClassOrInterfaceVisitor().visit(cu,null);
 						write();
@@ -142,11 +142,15 @@ public class UMLParser {
 					
 				}
 			}
+			for(String s: association_class){
+				sb.append(s).append("\n");
+		}
 			sb.append("@enduml\n");
 			classDiagramUML.classUML(sb);
-			System.out.println(sb);	
+			//System.out.println(sb);	
 
 	}
+	
 	private static class InterfaceFirstVisitor extends VoidVisitorAdapter<Void>{
 		public void visit(ClassOrInterfaceDeclaration c,Void arg){
 
@@ -159,7 +163,7 @@ public class UMLParser {
 		}
 	}
 	
-		private static class ClassOrInterfaceVisitor extends VoidVisitorAdapter<Void>{
+	private static class ClassOrInterfaceVisitor extends VoidVisitorAdapter<Void>{
 		@Override
 		public void visit(ClassOrInterfaceDeclaration c,Void arg){
 			java.util.List<ClassOrInterfaceType> type;
@@ -198,14 +202,14 @@ public class UMLParser {
 		}
 	}
 	
-		//Fetch all fields
+	//Fetch all fields
 	private static class FieldVisitor extends VoidVisitorAdapter<Void> {
 		
 		public void visit(FieldDeclaration f, Void arg){
 
 			int modifier = f.getModifiers();
 			String sign = null;
-			VariableDeclarator var_f;
+			String var_f;
 			String fieldType;
 			ArrayList<String> curr_fieldType = new ArrayList<String>();
 			
@@ -217,21 +221,24 @@ public class UMLParser {
 			}
 			
 			fieldType = f.getType().toString();
-			var_f = (f.getVariables().get(0));
-				
-			String text = sign + var_f + " : " + fieldType;
+			var_f = (f.getVariables().get(0).toString());
+
+			all_field_names.add(var_f.toUpperCase());
+
+			String text = sign + " " + var_f + " : " + fieldType;
 			if ((modifier ==1 || modifier ==2) && (fieldType.contains("Collection") == false) && (java_class_name.contains(fieldType) == false)){
 					field_names.add(text);
+					//curr_field_names.add();
 			}
 			curr_fieldType.add(fieldType); 				
 			for(String s : curr_fieldType){
 				//System.out.println(s);
 				if(java_class_name.contains(s) && s.contains("Collection") == false){
-					String str = s + " -- " + ClassList[0];
-					String rev = ClassList[0] + " -- " + s;
-					System.out.println("Current Association" +curr_association);
-					System.out.println("Association" + association_class);
-					System.out.println("str :"+str);
+					String rev = s + " -- " + ClassList[0];
+					String str = ClassList[0] + " -- " + s;
+					//System.out.println("Current Association" +curr_association);
+					//System.out.println("Association" + association_class);
+					//System.out.println("str :"+str);
 					//Add the association line only If current list do not have the reverse string and current list do not have the str
 					if((curr_association.contains(rev) == false) && (curr_association.contains(str) == false)){
 						association_class.add(str);
@@ -242,11 +249,24 @@ public class UMLParser {
 					param[1] = param[1].replace(">","");
 					if(java_class_name.contains(param[1])){
 						String str = ClassList[0] + " -- " + "\"*\" " + param[1];
+						String star_rev = param[1] + " -- " + "\"*\" " + ClassList[0];
 						String rev = param[1] + " -- " + ClassList[0];
 						String without_star = ClassList[0] + " -- " + param[1];
-						if ((curr_association.contains(without_star) == false) && (curr_association.contains(rev) == false)){
+						String both_side_stars = ClassList[0] + "\"*\" " + " -- " + "\"*\" " + param[1];
+						//System.out.println("Current Association in collection loop" +curr_association);
+						//System.out.println("Association in collection loop" + association_class);
+						//System.out.println("str in collection loop :"+str);
+						//System.out.println("star _rev "+ star_rev);
+						
+						if((curr_association.contains(star_rev) == false) && (curr_association.contains(str) == false) && (curr_association.contains(without_star) == false) && (curr_association.contains(rev) == false)){
 							association_class.add(str);
-							curr_association.add(without_star);
+							curr_association.add(str);
+							curr_association.add(without_star);			
+						}else if (curr_association.contains(star_rev) ){
+							association_class.add(both_side_stars);
+							curr_association.add(both_side_stars);
+							association_class.remove(str);
+							association_class.remove(star_rev);
 						}
 					}
 				}
@@ -262,74 +282,19 @@ public class UMLParser {
 
 			int modifier = m.getModifiers();
 			String[] splitVariable;
-			int flag = 0;
-			String text = " ";
-						
-		if ((m.getName().substring(0,3).equals("get") || m.getName().substring(0,3).equals("set")) && (modifier ==1)) 
-		{
-			//System.out.println("in flag = 1 " + m.getName());
-			flag = 1;
-			for(int i=0;i<=field_names.size()-1;i++){
-				System.out.println(field_names.get(i).split(" "));
-			}
-		}else if (((modifier == 1) || (modifier ==1025) || (modifier == 9)) && (flag ==0)){
-
-				//System.out.println("in flag = 0 "+ m.getName());
-				if (m.getParameters() != null){
-					curr_param_list.add(m.getParameters().toString().replace("[","").replace("]",""));
-					
-					StringBuffer  str = new StringBuffer();
-					for(int i = 0; i< m.getParameters().size() ; i++){
-						 str.append(m.getParameters().get(i).getId() + " : " + m.getParameters().get(i).getType() + " ");
-					}
-					if (modifier == 9){
-						text = "{static}" + m.getName() + "(" + str +")" + ":" + m.getType();
-						method_names.add(text);
-					}else {
-						text = m.getName() + "(" + str +")" + ":" + m.getType();
-						method_names.add(text);
-					}
-					
-					if (m.getName().contains("main")) {
-						//System.out.println("Body of main *" +m.getBody().getStmts().get(0).toString());
-						for(int i=0;i<+m.getBody().getStmts().size()-1;i++){
-							splitVariable = m.getBody().getStmts().get(i).toString().split(" ");
-							//System.out.println("split variable"+splitVariable[0]);
-							if(interface_names.contains(splitVariable[0]) == true){
-								text = ClassList[0] + "..>" + splitVariable[i];
-								rel_class.add(text);
-							}
-						}
-					}
-				}
-				else if(m.getParameters() == null){
-					text = m.getName() + "()" + ":" + m.getType();
-					method_names.add(text);
-				}
-			}
-		flag = 0;
-		}
-	}
-	
-		//Fetch all methods in the class
-	private static class MethodVisitor extends VoidVisitorAdapter<Void>{
-		@Override
-		public void visit(MethodDeclaration m,Void arg){
-
-			int modifier = m.getModifiers();
-			String[] splitVariable;
 			String[] part;
 			int flag = 0;
 			String text = " ";
 			String tempString;
 			String mergeVariable;
-						
-		if ((m.getName().substring(0,3).equals("get") || m.getName().substring(0,3).equals("set")) && (modifier ==1)) 
+	
+				
+		if ((m.getName().substring(0,3).equals("get") || m.getName().substring(0,3).equals("set")) && (modifier ==1) && (all_field_names.contains(m.getName().substring(3).toUpperCase()))) 
 		{
 			flag = 1;
 			
 			for(int i=0;i<=field_names.size()-1;i++){
-				
+
 				splitVariable = field_names.get(i).split(":");
 				part = splitVariable[0].split(" ");
 				String fieldName = part[1];
@@ -380,7 +345,7 @@ public class UMLParser {
 		}
 	}
 	
-		//Fetch all Constructors
+	//Fetch all Constructors
 	private static class ConstructorTypeVisitor extends VoidVisitorAdapter<Void> {
 		
 		public void visit(ConstructorDeclaration cd, Void arg){
@@ -402,7 +367,8 @@ public class UMLParser {
 			constructorDependency();
 		}
 	}
-		public static void verifyDependency() {
+	
+	public static void verifyDependency() {
 		String[] param;
 		String text;
 
@@ -419,7 +385,8 @@ public class UMLParser {
 		}			
 		curr_param_list.clear();
 	}
-		public static void constructorDependency() {
+	
+	public static void constructorDependency() {
 		String[] paramC;
 		String text;
 							
@@ -435,6 +402,8 @@ public class UMLParser {
 		}
 	curr_param_list.clear();
 	}
+	
+	
 private static void write(){
 	try {
 		//sb.setLength(0);
@@ -460,9 +429,9 @@ private static void write(){
 			//System.out.println(s);			
 			sb.append(s).append("\n");
 		}
-		for(String s: association_class){
-				sb.append(s).append("\n");
-		}
+//		for(String s: association_class){
+//				sb.append(s).append("\n");
+//		}
 		
 	} catch (Exception e) {
 		e.printStackTrace();
@@ -471,7 +440,9 @@ private static void write(){
 	method_names.clear();
 	field_names.clear();
 	rel_class.clear();
-	association_class.clear();
+//	association_class.clear();
 	
 	}
 }
+
+
