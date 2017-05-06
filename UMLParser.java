@@ -4,13 +4,11 @@ import japa.parser.ast.body.ClassOrInterfaceDeclaration;
 import japa.parser.ast.body.ConstructorDeclaration;
 import japa.parser.ast.body.FieldDeclaration;
 import japa.parser.ast.body.MethodDeclaration;
-import japa.parser.ast.body.VariableDeclarator;
 import japa.parser.ast.type.ClassOrInterfaceType;
 import japa.parser.ast.visitor.VoidVisitorAdapter;
 
 import java.io.File;
 import java.io.FileInputStream;
-//import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -44,12 +42,8 @@ public class UMLParser {
 		
 		String classNames;
 		String input_dir_name = args[0];
-		//String input_dir_name = "E:/SJSU/202Paul/202UMLParser/SampleJavaFiles/TestCase5";
-		//System.out.println("Input Path: " + input_dir_name);
-		
 		String outfile = args[1];
 		out_file = input_dir_name + "/" + outfile +".png";
-		//System.out.println("Output File:" + out_file);
 
 		sb.append("@startuml\n");
 		sb.append("skinparam classAttributeIconsize 0\n");
@@ -182,17 +176,14 @@ public class UMLParser {
 
 				for(int i=0;i < type.size();i++) {
 					String var = type.get(i).toString().replace("[,]","") +  "<|--" +" " +ClassList[0];
-					//System.out.println(var);
 					rel_class.add(var);
 				}				
 			}
-			//System.out.println(c.getImplements());
+
 			if (c.getImplements() != null){
 				type = c.getImplements();
-				//System.out.println(type);
 				for(int i =0; i<type.size();i++) {
 					String var = type.get(i).toString().replace("[,]","") + "<|.." + " " + ClassList[0];
-					//System.out.println(var);
 					rel_class.add(var);
 				}
 				
@@ -228,18 +219,12 @@ public class UMLParser {
 			String text = sign + " " + var_f + " : " + fieldType;
 			if ((modifier ==1 || modifier ==2) && (fieldType.contains("Collection") == false) && (java_class_name.contains(fieldType) == false)){
 					field_names.add(text);
-					//curr_field_names.add();
 			}
 			curr_fieldType.add(fieldType); 				
 			for(String s : curr_fieldType){
-				//System.out.println(s);
 				if(java_class_name.contains(s) && s.contains("Collection") == false){
 					String rev = s + " -- " + ClassList[0];
 					String str = ClassList[0] + " -- " + s;
-					//System.out.println("Current Association" +curr_association);
-					//System.out.println("Association" + association_class);
-					//System.out.println("str :"+str);
-					//Add the association line only If current list do not have the reverse string and current list do not have the str
 					if((curr_association.contains(rev) == false) && (curr_association.contains(str) == false)){
 						association_class.add(str);
 						curr_association.add(str); 
@@ -253,10 +238,7 @@ public class UMLParser {
 						String rev = param[1] + " -- " + ClassList[0];
 						String without_star = ClassList[0] + " -- " + param[1];
 						String both_side_stars = ClassList[0] + "\"*\" " + " -- " + "\"*\" " + param[1];
-						//System.out.println("Current Association in collection loop" +curr_association);
-						//System.out.println("Association in collection loop" + association_class);
-						//System.out.println("str in collection loop :"+str);
-						//System.out.println("star _rev "+ star_rev);
+
 						
 						if((curr_association.contains(star_rev) == false) && (curr_association.contains(str) == false) && (curr_association.contains(without_star) == false) && (curr_association.contains(rev) == false)){
 							association_class.add(str);
@@ -307,8 +289,6 @@ public class UMLParser {
 				}
 			}
 		}else if (((modifier == 1) || (modifier ==1025) || (modifier == 9)) && (flag ==0)){
-
-				//System.out.println("in flag = 0 "+ m.getName());
 				if (m.getParameters() != null){
 					curr_param_list.add(m.getParameters().toString().replace("[","").replace("]",""));
 					
@@ -325,10 +305,8 @@ public class UMLParser {
 					}
 					
 					if (m.getName().contains("main")) {
-						//System.out.println("Body of main *" +m.getBody().getStmts().get(0).toString());
 						for(int i=0;i<+m.getBody().getStmts().size()-1;i++){
 							splitVariable = m.getBody().getStmts().get(i).toString().split(" ");
-							//System.out.println("split variable"+splitVariable[0]);
 							if(interface_names.contains(splitVariable[0]) == true){
 								text = ClassList[0] + "..>" + splitVariable[i];
 								rel_class.add(text);
@@ -374,7 +352,6 @@ public class UMLParser {
 
 
 		for(String p: curr_param_list){
-			//System.out.println("curr params list-->" +p);
 			param = p.trim().split(" ");
 			if(interface_names.contains(param[0]) && interface_names.contains(ClassList[0]) == false){
 				text = ClassList[0] + "..>" + param[0] + ":uses";
@@ -391,7 +368,6 @@ public class UMLParser {
 		String text;
 							
 		for(String p: curr_param_list){
-			//System.out.println("curr params list-->" +p);
 			paramC = p.trim().split(" ");
 			if(interface_names.contains(paramC[0]) && interface_names.contains(ClassList[0]) == false){
 				text = ClassList[0] + "..>" + paramC[0];
@@ -405,9 +381,7 @@ public class UMLParser {
 	
 	
 private static void write(){
-	try {
-		//sb.setLength(0);
-		
+	try {		
 		if (class_type == "interface") {
 			sb.append(class_type + " " + ClassList[0] + "<<interface>>" + "{" + "\n");
 		} else {
@@ -429,10 +403,6 @@ private static void write(){
 			//System.out.println(s);			
 			sb.append(s).append("\n");
 		}
-//		for(String s: association_class){
-//				sb.append(s).append("\n");
-//		}
-		
 	} catch (Exception e) {
 		e.printStackTrace();
 	}
@@ -440,9 +410,5 @@ private static void write(){
 	method_names.clear();
 	field_names.clear();
 	rel_class.clear();
-//	association_class.clear();
-	
 	}
 }
-
-
