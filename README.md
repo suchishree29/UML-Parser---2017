@@ -11,7 +11,7 @@ This Project aims at creating a Parser which converts Java Source Code into a UM
  https://github.com/javaparser/javaparser/wiki/Manual
  
  JAR -> javaparser-1.0.8.jar
- Using Visitor classes like InterfaceFirstVisitor ,FieldVisitor and its visit methods, parsed Java source code to get an Abstract Syntax Tree (AST) from Java code. 
+ Using Visitor classes like InterfaceFirstVisitor ,FieldVisitor and its visit methods, parsed Java source code to get intermediate code.
  
  ● <b>Plant UML</b>
  http://plantuml.com
