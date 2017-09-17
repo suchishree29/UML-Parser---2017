@@ -27,7 +27,9 @@ This Project aims at creating a Parser which converts Java Source Code into a UM
 
  java -jar plantuml.jar classDiagram.txt 
  
- and the result is a nice diagram in classDiagram.png.
+ and the result is a nice diagram in classDiagram.png as shown below :
+ 
+ ![alt tag](https://github.com/suchishree29/UML-Parser---2017/blob/master/Sample%20Java%20File/TestCase4/outfile.png)
  
  ● <b>GraphViz</b>
 http://www.graphviz.org/
