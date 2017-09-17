@@ -19,7 +19,9 @@ This Project aims at creating a Parser which converts Java Source Code into a UM
  
  JAR -> plantuml.jar
  
- PlantUml generates  the final class diagram. The generateImage() method takes the input intermediate code(generated in previous step) and converts it to the Class Diagram Image. Make a file containing PlantUML commands, either with an editor or when running other software which calls PlantUML.
+ PlantUml generates  the final class diagram. The generateImage() method takes the input intermediate code(generated in previous step) and converts it to the Class Diagram Image. 
+ 
+ Make a file containing PlantUML commands, either with an editor or when running other software which calls PlantUML.
  Run (or have the software call) PlantUML with this file as input. The output is an image, which either appears in the other software,  or is written to an image file on disk.
  For example,
 
