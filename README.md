@@ -12,18 +12,20 @@ This Project aims at creating a Parser which converts Java Source Code into a UM
  
  JAR -> javaparser-1.0.8.jar
  Using Visitor classes like InterfaceFirstVisitor ,FieldVisitor and its visit methods, parsed Java source code to get intermediate code.
+ This library is used to parse the input java files and get the ASTs. javaparser.jar uses libraries and functions that follow the   Visitor pattern. Same pattern is followed in the project code to parse the input java files and create the intermediate code(ASTs). The intermediate language is formed as is accepted by the plantUML.
  
  ● <b>Plant UML</b>
  http://plantuml.com
  
  JAR -> plantuml.jar
- Make a file containing PlantUML commands, either with an editor or when running other software which calls PlantUML.
+ 
+ PlantUml generates  the final class diagram. The generateImage() method takes the input intermediate code(generated in previous step) and converts it to the Class Diagram Image. Make a file containing PlantUML commands, either with an editor or when running other software which calls PlantUML.
  Run (or have the software call) PlantUML with this file as input. The output is an image, which either appears in the other software,  or is written to an image file on disk.
  For example,
 
  java -jar plantuml.jar classDiagram.txt 
  
- and the result is a nice diagram in classeDiagram.png.
+ and the result is a nice diagram in classDiagram.png.
  
  ● <b>GraphViz</b>
 http://www.graphviz.org/
